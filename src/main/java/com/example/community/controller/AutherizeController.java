@@ -4,6 +4,7 @@ import com.example.community.dto.AccessTokenDto;
 import com.example.community.dto.GithubUser;
 import com.example.community.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,8 +19,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AutherizeController {
 
+    //自动注入实体类，不用使用new来创建对象
     @Autowired
     private GithubProvider githubProvider;
+
+    //value将配置文件中的内容进行填充
+    @Value("{github.client.id}")
+    private String clientId;
+
+    @Value("{github.redirect.uri}")
+    private String redirectUri;
+
+    @Value("{12a47962fe408bb7305855288fb486b733a9a9ab}")
+    private String clientSecret;
 
     /*
      * @Description:
@@ -36,9 +48,9 @@ public class AutherizeController {
         AccessTokenDto accessTokenDto = new AccessTokenDto();
         accessTokenDto.setCode(code);
         accessTokenDto.setState(state);
-        accessTokenDto.setRedirect_uri("http://localhost:8080/callback");
-        accessTokenDto.setClient_id("edad8c371426b2d36d73");
-        accessTokenDto.setClient_secret("12a47962fe408bb7305855288fb486b733a9a9ab");
+        accessTokenDto.setRedirect_uri(redirectUri);
+        accessTokenDto.setClient_id(clientId);
+        accessTokenDto.setClient_secret(clientSecret);
         String accessToken = githubProvider.getAccessToken(accessTokenDto);
         GithubUser user = githubProvider.getUser(accessToken);
         System.out.println(user.toString());
