@@ -43,5 +43,19 @@
       例如：
       此处的回调地址为：http://localhost:8080/callback
       因此需要填写为callback来创建Controller用于获取申请码
-      
+      传递参数 code state
+      类：AutherizeController
+      方法：callback
+    3.根据code申请令牌token
+      token的获取主要是根据code来访问网址：https://github.com/login/oauth/access_token 
+      项目此处：
+      callback方法下根据填充AccessToken实例
+      使用GitHub支持类GithubProvider来获取token
+    4.根绝token获取用户信息
+      根据token令牌去获取访问网址："https://api.github.com/user?access_token=.......
+      来获取用户信息
+      用户信息中主要是id来标识唯一用户
+      项目此处：
+      callback 方法下根据 获取的accesstoken
+      使用GitHubProvider下的getUser方法来获取用户      
    

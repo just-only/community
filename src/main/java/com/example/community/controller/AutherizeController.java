@@ -33,15 +33,15 @@ public class AutherizeController {
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state){
 
-        AccessTokenDto accessTokenDto1 = new AccessTokenDto();
-        accessTokenDto1.setCode(code);
-        accessTokenDto1.setState(state);
-        accessTokenDto1.setRedirect_uri("http://localhost:8080/callback");
-        accessTokenDto1.setClient_id("edad8c371426b2d36d73");
-        accessTokenDto1.setClient_secret("12a47962fe408bb7305855288fb486b733a9a9ab");
-        String accessToken = githubProvider.getAccessToken(accessTokenDto1);
+        AccessTokenDto accessTokenDto = new AccessTokenDto();
+        accessTokenDto.setCode(code);
+        accessTokenDto.setState(state);
+        accessTokenDto.setRedirect_uri("http://localhost:8080/callback");
+        accessTokenDto.setClient_id("edad8c371426b2d36d73");
+        accessTokenDto.setClient_secret("12a47962fe408bb7305855288fb486b733a9a9ab");
+        String accessToken = githubProvider.getAccessToken(accessTokenDto);
         GithubUser user = githubProvider.getUser(accessToken);
-        System.out.println(user.getName());
+        System.out.println(user.toString());
        return "index";
     }
 
