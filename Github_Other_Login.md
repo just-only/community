@@ -15,8 +15,8 @@
     认证流程
       - 用户打开博客，想要通过GitHub获取用户的基本信息
       - 转跳到GitHub的授权页面后，用户同意我获取他的基本信息
-      - 博客获得GitHub提供的授权码，使用该授权码向GitHub申请一个令牌
-      - GitHub对博客提供的授权码进行验证，验证无误后，发放一个令牌给博客端
+      - 博客获得GitHub提供的授权码，该授权码用于向GitHub申请令牌
+      - GitHub对博客提供的授权码进行验证，验证无误后，发放令牌给博客端
       - 博客端使用令牌，向GitHub获取用户信息
       - GitHub 确认令牌无误，返回给基本的用户信息
     
@@ -30,11 +30,18 @@
       此处主要是在前端代码中明确写出跳转地址以及参数
       跳转地址：https://github.com/login/oauth/authorize
       参数：
-      client_id：创建 OAuth应用时github官网生成的id。用于准确找到相应的应用
+      client_id：创建 OAuth应用时github官网生成的id。用于准确找到相应app
       redirect_uri：创建OAuth应用时填写的回调地址
       scope：携带的用户内容
-      最后填充的地址如下：
-      https://github.com/login/oauth/authorize?client_id=edad8c371426b2d36d73&redirect_uri=http://localhost:8080/callback&scope=user
-      
+      state：随机字符串。它用于防止跨站点请求伪造攻击
+      最后填充的地址类似如下：
+      https://github.com/login/oauth/authorize?client_id=sahdjha1jd3hsa5&redirect_uri=http://localhost:8080/callback&scope=user&state=1
+    
+    2.获取授权码
+      在访问授权页面之后，会返回授权码，用于申请令牌
+      使用回调网址的资源地址，来填写相应的Controller
+      例如：
+      此处的回调地址为：http://localhost:8080/callback
+      因此需要填写为callback来创建Controller用于获取申请码
       
    

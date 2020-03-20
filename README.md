@@ -12,11 +12,11 @@
 [Github 第三方登录授权](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)
 #### 笔记
 
-###### git: usergit.md
+###### git: User_Git.md
 
 ###### Bootstrap: Bootstrap.md
 
-###### GIthub_other_login.md
+###### GIthub_Other_Login.md
 
 
 
