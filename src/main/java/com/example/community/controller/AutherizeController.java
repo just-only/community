@@ -24,13 +24,14 @@ public class AutherizeController {
     private GithubProvider githubProvider;
 
     //value将配置文件中的内容进行填充
-    @Value("{github.client.id}")
+    //注意 $符号千万不能忘记
+    @Value("${github.client.id}")
     private String clientId;
 
-    @Value("{github.redirect.uri}")
+    @Value("${github.redirect.uri}")
     private String redirectUri;
 
-    @Value("{12a47962fe408bb7305855288fb486b733a9a9ab}")
+    @Value("${github.client.secret}")
     private String clientSecret;
 
     /*
@@ -52,6 +53,7 @@ public class AutherizeController {
         accessTokenDto.setClient_id(clientId);
         accessTokenDto.setClient_secret(clientSecret);
         String accessToken = githubProvider.getAccessToken(accessTokenDto);
+    //    System.out.println(accessToken);
         GithubUser user = githubProvider.getUser(accessToken);
         System.out.println(user.toString());
        return "index";
