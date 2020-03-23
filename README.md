@@ -7,9 +7,10 @@
 
 [git 学习](https://www.runoob.com/git/git-tutorial.html)
 
-[spring 学习网址](https://spring.io/guides/)
+[spring 学习网址](https://www.springcloud.cc/spring-boot.html)
   
-[Github 第三方登录授权](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)
+[Github 第三方登录授权](https://developer.github.com/apps/building-oauth-apps/)
+
 #### 笔记
 
 ###### git笔记: User_Git.md
@@ -21,6 +22,9 @@
 ###### Mybatis ：UserMybatis.md
 
 ###### 其他笔记： Other.md
+
+###### FlyWay工具: UseFlyWay.md
+
 
 
 
