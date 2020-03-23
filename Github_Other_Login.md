@@ -57,5 +57,21 @@
       用户信息中主要是id来标识唯一用户
       项目此处：
       callback 方法下根据 获取的accesstoken
-      使用GitHubProvider下的getUser方法来获取用户      
+      使用GitHubProvider下的getUser方法来获取用户    
+      
+  #### 登录持久化
+    
+   ##### 操作思路
+     
+     1.将登录用户数据放入数据库，使用UUID生成随机串来作为token的value绑定用户
+     2.将用户登录数据放入Session中，由前端获取数据显示
+     3.再次登录时，获取请求的token列表，根据token的value去数据库查询
+     4.当数据库中存在该token绑定的用户，则使用该用户信息直接登录
+   
+   ##### 操作
+     此处为本项目实现的操作
+     1.AutherizeController中根绝获取的用户信息，使用UserMapper将数据插入数据库
+     2.将user用户信息通过resquest放入session中，前端index.html使用session.user来获取用户信息
+     3.IndexController中，根据resquest获取cookies，找到name为token的value
+     4.使用token的值取数据库查找到用户信息，登录
    

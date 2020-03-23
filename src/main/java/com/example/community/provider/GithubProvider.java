@@ -48,7 +48,7 @@ public class GithubProvider {
     }
 
     /*
-     * @Description:
+     * @Description:获取github的用户信息
      * @Author: weidongya
      * @Date: 21:26
      * @param accessTokenDto 根据申请码获取的令牌
