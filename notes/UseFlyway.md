@@ -33,6 +33,7 @@
         {prefix}{version}_{description}{suffix}
         Repeatable
         {prefix}_{description}{suffix}
+        V+版本号 +双下划线+秒速+结束符 
         prefix: 可配置，前缀标识，默认值 V 表示 Versioned, R 表示 Repeatable
         version: 标识版本号, 由一个或多个数字构成, 数字之间的分隔符可用点.或下划线_
         separator: 可配置, 用于分隔版本标识与描述信息, 默认为两个下划线__
@@ -78,6 +79,13 @@
         spring.flyway.outOfOrder=true
           # 开发环境最好开启 outOfOrder, 生产环境关闭 outOfOrder . 
         #spring.flyway.schemas=
-          # 需要 flyway 管控的 schema list, 缺省的话, 使用的时 dbsource.connection直连上的那个 schema, 可以指定多个schema, 但仅会在第一个schema下建立 metadata 表, 也仅在第一个schema应用migration sql 脚本. 但flyway Clean 命令会依次在这些schema下都执行一遍.
-      
-      
+          # 需要 flyway 管控的 schema list, 缺省的话, 使用的时 dbsource.connection直连上的那个 schema, 可以指定多个schema, 但仅会在第一个schema下建立 metadata 表, 也仅在第一个schema应用migration sql 脚本. 但flyway Clean 命令会依次在这些schema下都执行一遍
+   #### 使用
+      首先需要将配置文件进行配置，将插件进行集合
+      1.创建文件夹 classpath:db/migration
+      2.在migration中创建文件V2__Add-bio-to-user.sql等文件
+      3.使用命令 mvn flyway:baseline 来创建 flyway_schema_history 表，进行初始化
+      4.使用命令 mvn flyway:migrate 将文件内容推送到 flyway_schema_history表中
+      5. 使用命令 mvn flyway:info 来查看表flyway_schema_history中的文件记录是否成功
+      6.使用命令 mvn flyway:validate 将flyway_schema_history表中的sql根据checknum来比对进行数据库的更改
+ 
