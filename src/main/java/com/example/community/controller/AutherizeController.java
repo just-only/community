@@ -72,10 +72,11 @@ public class AutherizeController {
             User user = new User();
             String token = UUID.randomUUID().toString();
             user.setToken(token);
-            user.setAccunt_id(String.valueOf(githubUser.getId()));
+            user.setAccount_id(String.valueOf(githubUser.getId()));
             user.setName(githubUser.getName());
             user.setCreate_time(System.currentTimeMillis());
             user.setModified(user.getCreate_time());
+            user.setBio(githubUser.getBio());
             userMapper.insertUser(user);
             request.getSession().setAttribute("user",githubUser);
             response.addCookie(new Cookie("token",token));

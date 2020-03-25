@@ -16,7 +16,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface UserMapper {
 
-    @Insert("insert into user(account_id,name,token,create_time,modified) values(#{account_id},#{name},#{token},#{create_time},#{modified})")
+    @Insert("insert into user(account_id,name,token,create_time,modified,bio) values(#{account_id},#{name},#{token},#{create_time},#{modified},#{bio})")
     void insertUser(User user);
 
     @Select("select * from user where token=#{token}")

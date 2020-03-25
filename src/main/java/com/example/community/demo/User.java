@@ -14,6 +14,7 @@ public class User {
     private String token;
     private Long create_time;
     private Long modified;
+    private String bio;
 
     public int getId() {
         return id;
@@ -27,8 +28,16 @@ public class User {
         return account_id;
     }
 
-    public void setAccunt_id(String account_id) {
+    public void setAccount_id(String account_id) {
         this.account_id = account_id;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public String getName() {

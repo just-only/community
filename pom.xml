@@ -71,7 +71,7 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>5.0.7</version>
+            <version>5.2.1</version>
         </dependency>
     </dependencies>
 
@@ -92,7 +92,6 @@
                     </goals>
                 </execution>
             </executions>
-            <!-- 此处配置可以直接通过插件操作 -->
             <configuration>
                 <url>jdbc:mysql://localhost:3306/db_forum</url>
                 <user>root</user>

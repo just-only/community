@@ -32,14 +32,16 @@ public class indexController {
     @GetMapping("/")
     public String index(HttpServletRequest request){
 
-        Cookie[] cookies = request.getCookies();//获取cookies的所有内容
-        for (Cookie cookie:cookies) {
+        if(request.getCookies()!=null) {
 
-            if(cookie.getName().equals("token")) {//存在name为token的数据，说明用户登陆过
-                String token = cookie.getValue();
-                User user = userMapper.findByToken(token);
-                request.getSession().setAttribute("user",user);//得到的用户信息，直接登录
-                break;
+            Cookie[] cookies = request.getCookies();//获取cookies的所有内容
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("token")) {//存在name为token的数据，说明用户登陆过
+                    String token = cookie.getValue();
+                    User user = userMapper.findByToken(token);
+                    request.getSession().setAttribute("user", user);//得到的用户信息，直接登录
+                    break;
+                }
             }
         }
         return "index";
