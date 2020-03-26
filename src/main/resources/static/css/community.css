@@ -11,3 +11,14 @@ body{
     float: right;
     margin-bottom: 15px;
 }
+
+.account-image-size{
+    width: 40px;
+    height: 40px;
+}
+
+.question-desc{
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}

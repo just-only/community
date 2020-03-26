@@ -1,13 +1,19 @@
 package com.example.community.controller;
 
 import com.example.community.demo.User;
+import com.example.community.dto.QuestionDto;
 import com.example.community.mappr.UserMapper;
+import com.example.community.service.QuestionDtoService;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Package: com.example.community.controller
@@ -22,6 +28,8 @@ public class indexController {
     @Autowired
     private UserMapper userMapper;//自动注入userMapper
 
+    @Autowired
+    private QuestionDtoService questionDtoService;
     /*
      * @Description:
      * @Author: weidongya
@@ -30,7 +38,8 @@ public class indexController {
      * @result: String
      **/
     @GetMapping("/")
-    public String index(HttpServletRequest request){
+    public String index(HttpServletRequest request,
+                        Model model){
 
         if(request.getCookies()!=null) {
 
@@ -44,6 +53,12 @@ public class indexController {
                 }
             }
         }
+        List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
+        questionDtos = questionDtoService.list();
+        for (QuestionDto questionDto:questionDtos) {
+            questionDto.getQuestion().setDescription("123456");
+        }
+        model.addAttribute("questionDtos",questionDtos);
         return "index";
     }
 }

@@ -21,4 +21,7 @@ public interface UserMapper {
 
     @Select("select * from user where token=#{token}")
     User findByToken(@Param("token") String token);
+
+    @Select("SELECT DISTINCT ACCOUNT_ID,`NAME`,bio,image_url FROM `user` where account_id=#{account_id}")
+    User findByAccount_id(String account_id);
 }
