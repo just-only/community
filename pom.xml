@@ -73,6 +73,12 @@
             <artifactId>flyway-core</artifactId>
             <version>5.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
@@ -93,7 +99,7 @@
                 </execution>
             </executions>
             <configuration>
-                <url>jdbc:mysql://localhost:3306/db_forum</url>
+                <url>jdbc:mysql://localhost:3306/db_forum?serverTimezone=UTC</url>
                 <user>root</user>
                 <password>123456</password>
                 <driver>com.mysql.cj.jdbc.Driver</driver>

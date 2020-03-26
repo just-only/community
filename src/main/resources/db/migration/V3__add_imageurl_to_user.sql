@@ -1,0 +1,1 @@
+alter table user add image_url varchar(200) null;

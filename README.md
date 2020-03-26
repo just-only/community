@@ -11,6 +11,9 @@
   
 [Github 第三方登录授权](https://developer.github.com/apps/building-oauth-apps/)
 
+[LomBok 官网](https://projectlombok.org/)
+
+[FlyWay官网](https://flywaydb.org/)
 #### 笔记 [~/community/notes]
 
 ###### git笔记: User_Git.md
@@ -24,6 +27,8 @@
 ###### 其他笔记： Other.md
 
 ###### FlyWay工具: UseFlyWay.md
+
+###### LomBok工具: Use_LomBok.md
 
 
 

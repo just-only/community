@@ -77,6 +77,7 @@ public class AutherizeController {
             user.setCreate_time(System.currentTimeMillis());
             user.setModified(user.getCreate_time());
             user.setBio(githubUser.getBio());
+            user.setImage_url(githubUser.getAvatar_url());
             userMapper.insertUser(user);
             request.getSession().setAttribute("user",githubUser);
             response.addCookie(new Cookie("token",token));
