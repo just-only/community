@@ -49,7 +49,7 @@
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span>发现</h2>
             <hr>
-            <div class="media" th:each="questiondto : ${questionDtos}">
+            <div class="media" th:each="questiondto : ${pagedto.pages}">
                 <div class="media-left">
                     <a href="#">
                         <img class="media-object img-rounde account-image-size" th:src="${questiondto.user.image_url}" >
@@ -69,7 +69,37 @@
                     <hr>
                 </div>
             </div>
+            <nav aria-label="Page navigation" class="pageNumber">
+                <ul class="pagination">
+                    <li th:if="${pagedto.firstPage}">
+                        <a href="/?page=1" aria-label="Previous">
+                            <span aria-hidden="true">&lt;&lt;</span>
+                        </a>
+                    </li>
+                    <li th:if="${pagedto.perviousPage}">
+                        <a th:href="@{/(page=${pagedto.index-1})}" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+                    <li th:each="page:${pagedto.list}" th:class="${pagedto.index == page}? 'active':'' ">
+                        <a th:href="@{/(page=${page})}" th:text="${page}"></a>
+                    </li>
+
+                    <li th:if="${pagedto.nextPage}">
+                        <a th:href="@{/(page=${pagedto.index+1})}" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${pagedto.lastPage}">
+                        <a th:href="@{/(page=${pagedto.count})}" aria-label="Next">
+                            <span aria-hidden="true">&gt;&gt;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
+
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <h3>热门问题</h3>
         </div>

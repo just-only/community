@@ -1,14 +1,18 @@
 package com.example.community.controller;
 
+import com.example.community.demo.Question;
 import com.example.community.demo.User;
+import com.example.community.dto.PageDto;
 import com.example.community.dto.QuestionDto;
+import com.example.community.mappr.QuestionMapper;
 import com.example.community.mappr.UserMapper;
 import com.example.community.service.QuestionDtoService;
-import org.hibernate.validator.constraints.Range;
+import org.flywaydb.core.internal.database.informix.InformixTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +34,9 @@ public class indexController {
 
     @Autowired
     private QuestionDtoService questionDtoService;
+
+    @Autowired
+    private QuestionMapper questionMapper;
     /*
      * @Description:
      * @Author: weidongya
@@ -39,7 +46,10 @@ public class indexController {
      **/
     @GetMapping("/")
     public String index(HttpServletRequest request,
-                        Model model){
+                        Model model,
+                        @RequestParam(name = "page",defaultValue = "1") Integer page,
+                        @RequestParam(name = "size",defaultValue = "5") Integer size){
+
 
         if(request.getCookies()!=null) {
 
@@ -54,11 +64,16 @@ public class indexController {
             }
         }
         List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
-        questionDtos = questionDtoService.list();
+        questionDtos = questionDtoService.list(page,size);
         for (QuestionDto questionDto:questionDtos) {
             questionDto.getQuestion().setDescription("123456");
         }
-        model.addAttribute("questionDtos",questionDtos);
+        Integer count = questionMapper.count();
+     //   System.out.println("count= "+count);
+        PageDto pagedto = new PageDto();
+        pagedto.setPages(questionDtos);
+        pagedto.setPage(page,count,size);
+        model.addAttribute("pagedto",pagedto);
         return "index";
     }
 }

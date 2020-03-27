@@ -34,8 +34,11 @@ public class QuestionDtoService {
       * @param null
      * @result:
      **/
-    public List<QuestionDto> list(){
-        List<Question> questions = questionMapper.findAll();
+    public List<QuestionDto> list(Integer page,Integer size){
+        Integer offset = size*(page-1);
+
+        List<Question> questions = questionMapper.findAll(offset,size);
+    //    System.out.println(questions);
         List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
      //   System.out.println(questions);
         for (Question question:questions) {
