@@ -7,7 +7,7 @@
 
 [git 学习](https://www.runoob.com/git/git-tutorial.html)
 
-[spring 学习网址](https://www.springcloud.cc/spring-boot.html)
+[spring-boot 学习网址](https://docs.spring.io/spring/docs/5.1.0.RELEASE/spring-framework-reference/index.html)
   
 [Github 第三方登录授权](https://developer.github.com/apps/building-oauth-apps/)
 

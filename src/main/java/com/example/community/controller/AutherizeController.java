@@ -79,7 +79,7 @@ public class AutherizeController {
             user.setBio(githubUser.getBio());
             user.setImage_url(githubUser.getAvatar_url());
             userMapper.insertUser(user);
-            request.getSession().setAttribute("user",githubUser);
+            request.getSession().setAttribute("user",user);
             response.addCookie(new Cookie("token",token));
             return "redirect:/";
         }else{

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,32 +28,16 @@ public class PublishController {
     @Autowired
     private QuestionMapper questionMapper;
 
-    @Autowired
-    private UserMapper userMapper;
-
 
     public User getUser(HttpServletRequest request){
         User user = null;
-        if(request.getCookies()!=null) {
-            Cookie[] cookies = request.getCookies();//获取cookies的所有内容
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("token")) {//存在name为token的数据，说明用户登陆过
-                    String token = cookie.getValue();
-                    user = userMapper.findByToken(token);
-                    request.getSession().setAttribute("user", user);//得到的用户信息，直接登录
-                    System.out.println(user);
-                    break;
-                }
-            }
-        }
+        user = (User) request.getSession().getAttribute("user");
         return user;
     }
 
     @GetMapping("/publish")
-    public String publish(HttpServletRequest request){
-        User user = getUser(request);
-       request.getSession().setAttribute("user",user);
-       return "publish";
+    public String doPublish(){
+        return "publish";
     }
 
     /*

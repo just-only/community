@@ -30,9 +30,6 @@ import java.util.List;
 public class indexController {
 
     @Autowired
-    private UserMapper userMapper;//自动注入userMapper
-
-    @Autowired
     private QuestionDtoService questionDtoService;
 
     @Autowired
@@ -49,27 +46,10 @@ public class indexController {
                         Model model,
                         @RequestParam(name = "page",defaultValue = "1") Integer page,
                         @RequestParam(name = "size",defaultValue = "5") Integer size){
-
-
-        if(request.getCookies()!=null) {
-
-            Cookie[] cookies = request.getCookies();//获取cookies的所有内容
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("token")) {//存在name为token的数据，说明用户登陆过
-                    String token = cookie.getValue();
-                    User user = userMapper.findByToken(token);
-                    request.getSession().setAttribute("user", user);//得到的用户信息，直接登录
-                    break;
-                }
-            }
-        }
+        
         List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
         questionDtos = questionDtoService.list(page,size);
-        for (QuestionDto questionDto:questionDtos) {
-            questionDto.getQuestion().setDescription("123456");
-        }
         Integer count = questionMapper.count();
-     //   System.out.println("count= "+count);
         PageDto pagedto = new PageDto();
         pagedto.setPages(questionDtos);
         pagedto.setPage(page,count,size);

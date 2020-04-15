@@ -24,4 +24,5 @@ public interface UserMapper {
 
     @Select("SELECT DISTINCT ACCOUNT_ID,`NAME`,bio,image_url FROM `user` where account_id=#{account_id}")
     User findByAccount_id(String account_id);
+
 }

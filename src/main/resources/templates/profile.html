@@ -2,22 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-    <title>风云论坛</title>
-    <!--    导入css样式和js模板代码-->
+    <title th:text="${sactionName}"></title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <link rel="stylesheet" href="/css/community.css">
-
 </head>
 <body>
 <nav th:insert="~{head :: nav}"></nav>
 <div class="container-fluid main">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span>发现</h2>
-            <hr>
+            <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true" th:text="${sactionName}"></span></h2>
             <div class="media" th:each="questiondto : ${pagedto.pages}">
                 <div class="media-left">
                     <a href="#">
@@ -25,9 +22,7 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading">
-                        <a th:href="@{'/question/'+ ${questiondto.question.id} }" th:text="${questiondto.question.title}"></a>
-                    </h4>
+                    <h4 class="media-heading" th:text="${questiondto.question.title}"></h4>
                     <span th:text="${questiondto.question.description}"></span><br/>
 
 
@@ -43,37 +38,49 @@
             <nav aria-label="Page navigation" class="pageNumber">
                 <ul class="pagination">
                     <li th:if="${pagedto.firstPage}">
-                        <a href="/?page=1" aria-label="Previous">
+                        <a href="/profile/question/?page=1" aria-label="Previous">
                             <span aria-hidden="true">&lt;&lt;</span>
                         </a>
                     </li>
                     <li th:if="${pagedto.perviousPage}">
-                        <a th:href="@{/(page=${pagedto.index-1})}" aria-label="Previous">
+                        <a th:href="@{/profile/question/(page=${pagedto.index-1})}" aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>
                     <li th:each="page:${pagedto.list}" th:class="${pagedto.index == page}? 'active':'' ">
-                        <a th:href="@{/(page=${page})}" th:text="${page}"></a>
+                        <a th:href="@{/profile/question/(page=${page})}" th:text="${page}"></a>
                     </li>
 
                     <li th:if="${pagedto.nextPage}">
-                        <a th:href="@{/(page=${pagedto.index+1})}" aria-label="Next">
+                        <a th:href="@{/profile/question/(page=${pagedto.index+1})}" aria-label="Next">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li>
 
                     <li th:if="${pagedto.lastPage}">
-                        <a th:href="@{/(page=${pagedto.count})}" aria-label="Next">
+                        <a th:href="@{/profile/question/(page=${pagedto.count})}" aria-label="Next">
                             <span aria-hidden="true">&gt;&gt;</span>
                         </a>
                     </li>
                 </ul>
             </nav>
         </div>
-
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-            <h3>热门问题</h3>
+            <br>
+            <div class="list-group">
+                <a href="/profile/question" th:class="${saction == 'question' }?'active list-group-item' : 'list-group-item' ">
+                    <span class="badge"  th:text="${count}"></span>
+                    我的问题
+                </a><br>
+                <a href="/profile/repies" th:class="${saction == 'repies' }?'active list-group-item' : 'list-group-item' ">
+                    <span class="badge">5</span>
+                    我的回复
+                </a><br>
+                <a href="#" class="list-group-item">Porta ac consectetur ac</a><br>
+                <a href="#" class="list-group-item">Vestibulum at eros</a>
+            </div>
         </div>
     </div>
+</div>
 </body>
 </html>

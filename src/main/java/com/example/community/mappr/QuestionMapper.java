@@ -1,10 +1,7 @@
 package com.example.community.mappr;
 
 import com.example.community.demo.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -25,6 +22,22 @@ public interface QuestionMapper {
     @Select("select * from question limit #{offset},#{size}")
     List<Question> findAll(@Param(value = "offset") int offset, @Param(value = "size") int size);
 
+    @Select("select * from question where creator=#{userId} limit #{offset},#{size}")
+    List<Question> findAllByUserId(@Param(value="userId") int userId,@Param(value = "offset") int offset, @Param(value = "size") int size);
+
     @Select("select count(*) from question")
     int count();
+
+    @Select("select count(*) from question where creator=#{userId}")
+    int countById(@Param(value="userId") int userId);
+
+    @Select("select * from question where id=#{id}")
+    Question grtById(@Param(value="id") Integer id);
+
+    @Update("update question set tag=#{tag},title=#{title},description=#{description},modified_time=#{currentTimeMillis} where  id=#{id}")
+    void updateQuestion(@Param(value="id") Integer id,
+                        @Param(value="tag") String tag,
+                        @Param(value="title") String title,
+                        @Param(value="description")String description,
+                        @Param(value="currentTimeMillis") long currentTimeMillis);
 }

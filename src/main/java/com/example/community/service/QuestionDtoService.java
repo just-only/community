@@ -51,4 +51,29 @@ public class QuestionDtoService {
         }
         return questionDtos;
     }
+    public List<QuestionDto> listById(Integer userId,Integer page,Integer size){
+        Integer offset = size*(page-1);
+
+        List<Question> questions = questionMapper.findAllByUserId(userId,offset,size);
+        //    System.out.println(questions);
+        List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
+        //   System.out.println(questions);
+        for (Question question:questions) {
+            User user = userMapper.findByAccount_id(Integer.toString(question.getCreator()));
+            System.out.println(user);
+            QuestionDto questionDto = new QuestionDto();
+            questionDto.setUser(user);
+            questionDto.setQuestion(question);
+            questionDtos.add(questionDto);
+        }
+        return questionDtos;
+    }
+
+    public QuestionDto findById(Integer id) {
+        QuestionDto questionDto = new QuestionDto();
+        Question question = questionMapper.grtById(id);
+        questionDto.setQuestion(question);
+        questionDto.setUser(userMapper.findByAccount_id(Integer.toString(question.getCreator())));
+        return questionDto;
+    }
 }
