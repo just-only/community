@@ -1,11 +1,11 @@
 package com.example.community.controller;
 
 import com.example.community.demo.User;
+import com.example.community.demo.UserExample;
 import com.example.community.dto.AccessTokenDto;
 import com.example.community.dto.GithubUser;
-import com.example.community.mappr.UserMapper;
+import com.example.community.mapper.UserMapper;
 import com.example.community.provider.GithubProvider;
-import okhttp3.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -73,16 +74,21 @@ public class AutherizeController {
             User user = new User();
             String token = UUID.randomUUID().toString();
             user.setToken(token);
-            user.setAccount_id(String.valueOf(githubUser.getId()));
+            user.setAccountId(String.valueOf(githubUser.getId()));
             user.setName(githubUser.getName());
-            user.setCreate_time(System.currentTimeMillis());
-            user.setModified(user.getCreate_time());
+            user.setCreateTime(System.currentTimeMillis());
+            user.setModified(user.getCreateTime());
             user.setBio(githubUser.getBio());
-            user.setImage_url(githubUser.getAvatar_url());
-            if(userMapper.findByAccount_id(user.getAccount_id())!=null){
-                userMapper.updateUser(user);
-            }else {
-                userMapper.insertUser(user);
+            user.setImageUrl(githubUser.getAvatar_url());
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andAccountIdEqualTo(user.getAccountId());
+            List<User> users = userMapper.selectByExample(userExample);
+            if(users.size()!=0){
+                userExample.createCriteria().andIdEqualTo(users.get(0).getId());
+                users.get(0).setCreateTime(null);
+                 userMapper.updateByExampleSelective(users.get(0),userExample);
+            }else{
+                userMapper.insertSelective(user);
             }
             request.getSession().setAttribute("user",user);
             response.addCookie(new Cookie("token",token));

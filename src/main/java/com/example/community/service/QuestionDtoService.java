@@ -1,10 +1,13 @@
 package com.example.community.service;
 
 import com.example.community.demo.Question;
+import com.example.community.demo.QuestionExample;
 import com.example.community.demo.User;
+import com.example.community.demo.UserExample;
 import com.example.community.dto.QuestionDto;
-import com.example.community.mappr.QuestionMapper;
-import com.example.community.mappr.UserMapper;
+import com.example.community.mapper.QuestionMapper;
+import com.example.community.mapper.UserMapper;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,14 +39,16 @@ public class QuestionDtoService {
      **/
     public List<QuestionDto> list(Integer page,Integer size){
         Integer offset = size*(page-1);
-
-        List<Question> questions = questionMapper.findAll(offset,size);
-    //    System.out.println(questions);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(),new RowBounds(offset,size));
+        //    System.out.println(questions);
         List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
-     //   System.out.println(questions);
+        //   System.out.println(questions);
         for (Question question:questions) {
-            User user = userMapper.findByAccount_id(Integer.toString(question.getCreator()));
-            System.out.println(user);
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andAccountIdEqualTo(Integer.toString(question.getCreator()));
+            //System.out.println(question);
+            User user = userMapper.selectByExample(userExample).get(0);
+            // System.out.println(user);
             QuestionDto questionDto = new QuestionDto();
             questionDto.setUser(user);
             questionDto.setQuestion(question);
@@ -53,14 +58,20 @@ public class QuestionDtoService {
     }
     public List<QuestionDto> listById(Integer userId,Integer page,Integer size){
         Integer offset = size*(page-1);
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andCreatorEqualTo(userId);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample,new RowBounds(offset,size));
 
-        List<Question> questions = questionMapper.findAllByUserId(userId,offset,size);
-        //    System.out.println(questions);
+        for(Question question1:questions){
+            System.out.println(question1);
+        }
         List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
         //   System.out.println(questions);
         for (Question question:questions) {
-            User user = userMapper.findByAccount_id(Integer.toString(question.getCreator()));
-            System.out.println(user);
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andAccountIdEqualTo(Integer.toString(question.getCreator()));
+            User user = userMapper.selectByExample(userExample).get(0);
+            //System.out.println(user);
             QuestionDto questionDto = new QuestionDto();
             questionDto.setUser(user);
             questionDto.setQuestion(question);
@@ -71,9 +82,11 @@ public class QuestionDtoService {
 
     public QuestionDto findById(Integer id) {
         QuestionDto questionDto = new QuestionDto();
-        Question question = questionMapper.getById(id);
+        Question question = questionMapper.selectByPrimaryKey(id);
         questionDto.setQuestion(question);
-        questionDto.setUser(userMapper.findByAccount_id(Integer.toString(question.getCreator())));
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andAccountIdEqualTo(Integer.toString(question.getCreator()));
+        questionDto.setUser(userMapper.selectByExample(userExample).get(0));
         return questionDto;
     }
 }

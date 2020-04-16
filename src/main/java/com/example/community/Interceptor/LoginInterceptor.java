@@ -1,7 +1,8 @@
 package com.example.community.Interceptor;
 
 import com.example.community.demo.User;
-import com.example.community.mappr.UserMapper;
+import com.example.community.demo.UserExample;
+import com.example.community.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Copyright (C), 2018-2020
@@ -30,8 +32,13 @@ public class LoginInterceptor implements HandlerInterceptor {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {//存在name为token的数据，说明用户登陆过
                     String token = cookie.getValue();
-                    User user = userMapper.findByToken(token);
-                    request.getSession().setAttribute("user", user);//得到的用户信息，直接登录
+                    UserExample userExample = new UserExample();
+                    userExample.createCriteria().andTokenEqualTo(token);
+                    List<User> users = userMapper.selectByExample(userExample);
+                    if(users.size()!=0){
+                        User user = users.get(0);
+                    }
+                    request.getSession().setAttribute("user", users.get(0));//得到的用户信息，直接登录
                     break;
                 }
             }

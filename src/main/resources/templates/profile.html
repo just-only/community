@@ -18,19 +18,19 @@
             <div class="media" th:each="questiondto : ${pagedto.pages}">
                 <div class="media-left">
                     <a href="#">
-                        <img class="media-object img-rounde account-image-size" th:src="${questiondto.user.image_url}" >
+                        <img class="media-object img-rounde account-image-size" th:src="${questiondto.user.imageUrl}" >
                     </a>
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading">
                         <a th:href="@{'/question/'+ ${questiondto.question.id} }" th:text="${questiondto.question.title}"></a>
                     </h4>
-                    <span th:text="${questiondto.question.description}"></span><br/>
+                    <span th:text="${questiondto.question.getDescription()}"></span><br/>
                     <span class="account-image-size">
                         作者：<span th:text="${questiondto.user.name}"></span> •
-                        <span th:text="${questiondto.question.comment_count}"></span> 评论 •
-                        <span th:text="${questiondto.question.view_count}"></span> 预览 •
-                        <span th:text="${#dates.format(questiondto.question.create_time,'yyyy-MMMM-dd HH:mm')}"></span>
+                        <span th:text="${questiondto.question.getCommentCount()}"></span> 评论 •
+                        <span th:text="${questiondto.question.getViewCount()}"></span> 预览 •
+                        <span th:text="${#dates.format(questiondto.question.getCreateTime(),'yyyy-MM-dd HH:mm')}"></span>
                     </span>
                     <hr>
                 </div>
@@ -43,7 +43,7 @@
                         </a>
                     </li>
                     <li th:if="${pagedto.perviousPage}">
-                        <a th:href="@{/profile/question/(page=${pagedto.index-1})}" aria-label="Previous">
+                        <a th:href="@{/profile/question/(page=${pagedto.getIndex()-1})}" aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li>

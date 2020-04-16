@@ -1,9 +1,10 @@
 package com.example.community.controller;
 
 import com.example.community.demo.Question;
+import com.example.community.demo.QuestionExample;
 import com.example.community.demo.User;
 import com.example.community.dto.QuestionDto;
-import com.example.community.mappr.QuestionMapper;
+import com.example.community.mapper.QuestionMapper;
 import com.example.community.service.QuestionDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,7 +48,7 @@ public class QuestionController {
                                  HttpServletRequest request,
                                  Model model){
         Question question = new Question();
-        question = questionMapper.getById(id);
+        question = questionMapper.selectByPrimaryKey(id);
         String tag = question.getTag();
         String title = question.getTitle();
         String description = question.getDescription();
@@ -68,7 +69,7 @@ public class QuestionController {
             Model model){
 
         Question question = new Question();
-        question = questionMapper.getById(id);
+        question = questionMapper.selectByPrimaryKey(id);
         model.addAttribute("tag",tag);
         model.addAttribute("title",title);
         model.addAttribute("description",description);
@@ -82,7 +83,14 @@ public class QuestionController {
             model.addAttribute("error1", "用户未登录！");
             return "redirect:/updatequestion"+"/"+id;
         }else{
-            questionMapper.updateQuestion(id,tag,title,description,System.currentTimeMillis());
+            Question question1 = new Question();
+            question.setDescription(description);
+            question.setTag(tag);
+            question.setTitle(title);
+            question.setModifiedTime(System.currentTimeMillis());
+            QuestionExample questionExample = new QuestionExample();
+            questionExample.createCriteria().andIdEqualTo(id);
+            questionMapper.updateByExampleSelective(question,questionExample);
             return "redirect:/question"+"/"+id;
         }
     }

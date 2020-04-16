@@ -21,9 +21,9 @@
                         作者：
                         <span th:text="${questiondto.user.name}"></span>   |
                         发布时间：
-                        <span th:text="${#dates.format(questiondto.question.create_time,'yyyy-MM-dd')}"></span>   |
+                        <span th:text="${#dates.format(questiondto.question.createTime,'yyyy-MM-dd')}"></span>   |
                         预览次数：
-                        <span th:text="${questiondto.question.view_count}"></span>
+                        <span th:text="${questiondto.question.viewCount}"></span>
             </span>
             <hr>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${questiondto.question.description}"></div>
@@ -32,9 +32,9 @@
             <hr>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <a class="modify-detailde-pen"> 时间: <span class="modify-detailde-pen"
-                                                          th:text="${#dates.format(questiondto.question.create_time,'yyyy-MM-dd')}"> </span>
+                                                          th:text="${#dates.format(questiondto.question.createTime,'yyyy-MM-dd')}"> </span>
                     </a>
-                <a class="modify-detailde-pen" th:href="@{'/updatequestion/'+ ${questiondto.question.id} }" th:if="${session.user!=null && questiondto.user.getAccount_id()==session.user.getAccount_id()}">
+                <a class="modify-detailde-pen" th:href="@{'/updatequestion/'+ ${questiondto.question.id} }" th:if="${session.user!=null && questiondto.user.getAccountId()==session.user.getAccountId()}">
                     | <span class="glyphicon glyphicon-pencil modify-detailde-pen" aria-hidden="true"></span>
                     编辑
                 </a>
@@ -49,7 +49,7 @@
                 <div class="media">
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object img-circle account-image-size" th:src="${questiondto.user.image_url}">
+                            <img class="media-object img-circle account-image-size" th:src="${questiondto.user.imageUrl}">
                         </a>
                     </div>
                     <div class="media-body">

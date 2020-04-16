@@ -1,12 +1,11 @@
 package com.example.community.controller;
 
+import com.example.community.demo.QuestionExample;
 import com.example.community.demo.User;
 import com.example.community.dto.PageDto;
 import com.example.community.dto.QuestionDto;
-import com.example.community.mappr.QuestionMapper;
-import com.example.community.mappr.UserMapper;
+import com.example.community.mapper.QuestionMapper;
 import com.example.community.service.QuestionDtoService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,22 +39,22 @@ public class ProfileController {
                              Model model,
                              HttpServletRequest request,
                              @RequestParam(name = "page",defaultValue = "1") Integer page,
-                             @RequestParam(name = "size",defaultValue = "4") Integer size){
+                             @RequestParam(name = "size",defaultValue = "5") Integer size){
         User user = (User) request.getSession().getAttribute("user");
         if(user==null){
-            return "/";
+            return "index";
         }
 
         if("question".equals(action)){
             model.addAttribute("saction","question");
             model.addAttribute("sactionName","我的问题");
             List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
-            questionDtos = questionDtoService.listById(Integer.valueOf(user.getAccount_id()),page,size);
-            for (QuestionDto questionDto:questionDtos) {
-                questionDto.getQuestion().setDescription("123456");
-            }
-            Integer count = questionMapper.countById(Integer.valueOf(user.getAccount_id()));
-            //   System.out.println("count= "+count);
+            questionDtos = questionDtoService.listById(Integer.valueOf(user.getAccountId()),page,size);
+            //System.out.println(questionDtos);
+            QuestionExample questionExample = new QuestionExample();
+            questionExample.createCriteria().andCreatorEqualTo(Integer.valueOf(user.getAccountId()));
+            Integer count = (int) questionMapper.countByExample(questionExample);
+            //   System.out.println("count= "+count);s
             PageDto pagedto = new PageDto();
             pagedto.setPages(questionDtos);
             pagedto.setPage(page,count,size);

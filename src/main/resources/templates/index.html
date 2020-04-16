@@ -21,7 +21,7 @@
             <div class="media" th:each="questiondto : ${pagedto.pages}">
                 <div class="media-left">
                     <a href="#">
-                        <img class="media-object img-rounde account-image-size" th:src="${questiondto.user.image_url}" >
+                        <img class="media-object img-rounde account-image-size" th:src="${questiondto.user.getImageUrl()}" >
                     </a>
                 </div>
                 <div class="media-body">
@@ -33,9 +33,9 @@
 
                     <span class="account-image-size">
                         作者：<span th:text="${questiondto.user.name}"></span> •
-                        <span th:text="${questiondto.question.comment_count}"></span> 评论 •
-                        <span th:text="${questiondto.question.view_count}"></span> 预览 •
-                        <span th:text="${#dates.format(questiondto.question.create_time,'yyyy-MMMM-dd HH:mm')}"></span>
+                        <span th:text="${questiondto.question.commentCount}"></span> 评论 •
+                        <span th:text="${questiondto.question.viewCount}"></span> 预览 •
+                        <span th:text="${#dates.format(questiondto.question.createTime,'yyyy-MM-dd HH:mm')}"></span>
                     </span>
                     <hr>
                 </div>
@@ -75,5 +75,6 @@
             <h3>热门问题</h3>
         </div>
     </div>
+</div>
 </body>
 </html>

@@ -1,20 +1,17 @@
 package com.example.community.controller;
 
-import com.example.community.demo.Question;
+import com.example.community.demo.QuestionExample;
 import com.example.community.demo.User;
 import com.example.community.dto.PageDto;
 import com.example.community.dto.QuestionDto;
-import com.example.community.mappr.QuestionMapper;
-import com.example.community.mappr.UserMapper;
+import com.example.community.mapper.QuestionMapper;
 import com.example.community.service.QuestionDtoService;
-import org.flywaydb.core.internal.database.informix.InformixTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +46,7 @@ public class indexController {
         User user =(User) request.getSession().getAttribute("user");
         List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
         questionDtos = questionDtoService.list(page,size);
-        Integer count = questionMapper.count();
+        Integer count = (int) questionMapper.countByExample(new QuestionExample());
         PageDto pagedto = new PageDto();
         pagedto.setPages(questionDtos);
         pagedto.setPage(page,count,size);

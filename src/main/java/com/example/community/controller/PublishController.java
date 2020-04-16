@@ -2,17 +2,14 @@ package com.example.community.controller;
 
 import com.example.community.demo.Question;
 import com.example.community.demo.User;
-import com.example.community.mappr.QuestionMapper;
-import com.example.community.mappr.UserMapper;
+import com.example.community.mapper.QuestionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -78,10 +75,10 @@ public class PublishController {
             question.setTitle(title);
             question.setDescription(description);
             question.setTag(tag);
-            question.setCreate_time(System.currentTimeMillis());
-            question.setModified_time(question.getCreate_time());
-            question.setCreator(Integer.valueOf(user.getAccount_id()));
-            questionMapper.addQuestion(question);
+            question.setCreateTime(System.currentTimeMillis());
+            question.setModifiedTime(question.getCreateTime());
+            question.setCreator(Integer.valueOf(user.getAccountId()));
+            questionMapper.insert(question);
             return "redirect:/";
         }
     }
