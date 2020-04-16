@@ -22,10 +22,10 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${questiondto.question.title}"></h4>
+                    <h4 class="media-heading">
+                        <a th:href="@{'/question/'+ ${questiondto.question.id} }" th:text="${questiondto.question.title}"></a>
+                    </h4>
                     <span th:text="${questiondto.question.description}"></span><br/>
-
-
                     <span class="account-image-size">
                         作者：<span th:text="${questiondto.user.name}"></span> •
                         <span th:text="${questiondto.question.comment_count}"></span> 评论 •

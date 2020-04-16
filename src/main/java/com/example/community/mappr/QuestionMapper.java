@@ -32,7 +32,7 @@ public interface QuestionMapper {
     int countById(@Param(value="userId") int userId);
 
     @Select("select * from question where id=#{id}")
-    Question grtById(@Param(value="id") Integer id);
+    Question getById(@Param(value="id") Integer id);
 
     @Update("update question set tag=#{tag},title=#{title},description=#{description},modified_time=#{currentTimeMillis} where  id=#{id}")
     void updateQuestion(@Param(value="id") Integer id,

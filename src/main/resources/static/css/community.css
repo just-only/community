@@ -26,3 +26,19 @@ body{
 .pageNumber{
     float: right;
 }
+
+.smallfontstyle{
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: normal;
+    cursor: pointer;
+    color: #155faa;
+}
+.big-font-style{
+    font-size: 15px;
+    color: #999;
+}
+.modify-detailde-pen{
+    font-size: 13px;
+    color: #999;
+}

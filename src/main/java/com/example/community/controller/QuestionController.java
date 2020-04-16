@@ -47,7 +47,7 @@ public class QuestionController {
                                  HttpServletRequest request,
                                  Model model){
         Question question = new Question();
-        question = questionMapper.grtById(id);
+        question = questionMapper.getById(id);
         String tag = question.getTag();
         String title = question.getTitle();
         String description = question.getDescription();
@@ -68,22 +68,22 @@ public class QuestionController {
             Model model){
 
         Question question = new Question();
-        question = questionMapper.grtById(id);
+        question = questionMapper.getById(id);
         model.addAttribute("tag",tag);
         model.addAttribute("title",title);
         model.addAttribute("description",description);
-        if(title.isEmpty()) { model.addAttribute("error","标题为空"); return "publish"; }
-        if(description.isEmpty()) { model.addAttribute("error","问题描述为空"); return "publish"; }
-        if(tag.isEmpty()) { model.addAttribute("error","标签为空！"); return "publish"; }
+        if(title.isEmpty()) { model.addAttribute("error1","标题为空"); return "redirect:/updatequestion"+"/"+id; }
+        if(description.isEmpty()) { model.addAttribute("error1","问题描述为空"); return "redirect:/updatequestion"+"/"+id; }
+        if(tag.isEmpty()) { model.addAttribute("error1","标签为空！"); return "redirect:/updatequestion"+"/"+id; }
 
         User user = getUser(request);
 
         if(user == null) {
-            model.addAttribute("error", "用户未登录！");
-            return "publish";
+            model.addAttribute("error1", "用户未登录！");
+            return "redirect:/updatequestion"+"/"+id;
         }else{
             questionMapper.updateQuestion(id,tag,title,description,System.currentTimeMillis());
-            return "question";
+            return "redirect:/question"+"/"+id;
         }
     }
 }

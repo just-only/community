@@ -5,6 +5,7 @@ import com.example.community.dto.AccessTokenDto;
 import com.example.community.dto.GithubUser;
 import com.example.community.mappr.UserMapper;
 import com.example.community.provider.GithubProvider;
+import okhttp3.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -65,7 +66,7 @@ public class AutherizeController {
         accessTokenDto.setClient_id(clientId);
         accessTokenDto.setClient_secret(clientSecret);
         String accessToken = githubProvider.getAccessToken(accessTokenDto);
-        System.out.println(accessToken);
+        //System.out.println(accessToken);
         GithubUser githubUser = githubProvider.getUser(accessToken);
         if(githubUser!=null){
             //登录成功，获取session
@@ -78,7 +79,11 @@ public class AutherizeController {
             user.setModified(user.getCreate_time());
             user.setBio(githubUser.getBio());
             user.setImage_url(githubUser.getAvatar_url());
-            userMapper.insertUser(user);
+            if(userMapper.findByAccount_id(user.getAccount_id())!=null){
+                userMapper.updateUser(user);
+            }else {
+                userMapper.insertUser(user);
+            }
             request.getSession().setAttribute("user",user);
             response.addCookie(new Cookie("token",token));
             return "redirect:/";
@@ -86,6 +91,16 @@ public class AutherizeController {
             //登录失败
             return "redirect:/";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response){
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
     }
 
 }

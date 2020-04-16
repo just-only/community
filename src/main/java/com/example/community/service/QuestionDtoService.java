@@ -71,7 +71,7 @@ public class QuestionDtoService {
 
     public QuestionDto findById(Integer id) {
         QuestionDto questionDto = new QuestionDto();
-        Question question = questionMapper.grtById(id);
+        Question question = questionMapper.getById(id);
         questionDto.setQuestion(question);
         questionDto.setUser(userMapper.findByAccount_id(Integer.toString(question.getCreator())));
         return questionDto;
