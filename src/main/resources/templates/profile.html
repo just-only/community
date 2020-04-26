@@ -26,10 +26,10 @@
                         <a th:href="@{'/question/'+ ${questiondto.question.id} }" th:text="${questiondto.question.title}"></a>
                     </h4>
                     <span th:text="${questiondto.question.getDescription()}"></span><br/>
-                    <span class="account-image-size">
-                        作者：<span th:text="${questiondto.user.name}"></span> •
-                        <span th:text="${questiondto.question.getCommentCount()}"></span> 评论 •
-                        <span th:text="${questiondto.question.getViewCount()}"></span> 预览 •
+                    <span class="account-image-size smallfontstyle">
+                        作者：<span th:text="${questiondto.user.name}"></span> • 评论
+                        <span th:text="${questiondto.question.getCommentCount()}"></span> • 预览 •
+                        <span th:text="${questiondto.question.getViewCount()}"></span> 时间
                         <span th:text="${#dates.format(questiondto.question.getCreateTime(),'yyyy-MM-dd HH:mm')}"></span>
                     </span>
                     <hr>

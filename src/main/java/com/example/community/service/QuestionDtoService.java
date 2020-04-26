@@ -5,6 +5,9 @@ import com.example.community.demo.QuestionExample;
 import com.example.community.demo.User;
 import com.example.community.demo.UserExample;
 import com.example.community.dto.QuestionDto;
+import com.example.community.exception.MyException;
+import com.example.community.exception.MyExceptionMessage;
+import com.example.community.mapper.QuestionExtMapper;
 import com.example.community.mapper.QuestionMapper;
 import com.example.community.mapper.UserMapper;
 import org.apache.ibatis.session.RowBounds;
@@ -22,7 +25,7 @@ import java.util.List;
  * Modified By:
  */
 @Service
-public class QuestionDtoService {
+public class  QuestionDtoService {
 
     @Autowired
     private QuestionMapper questionMapper;
@@ -30,6 +33,8 @@ public class QuestionDtoService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
     /*
      * @Description:查找所有的问题列表内容
      * @Author: weidongya
@@ -62,9 +67,6 @@ public class QuestionDtoService {
         questionExample.createCriteria().andCreatorEqualTo(userId);
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample,new RowBounds(offset,size));
 
-        for(Question question1:questions){
-            System.out.println(question1);
-        }
         List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
         //   System.out.println(questions);
         for (Question question:questions) {
@@ -86,7 +88,13 @@ public class QuestionDtoService {
         questionDto.setQuestion(question);
         UserExample userExample = new UserExample();
         userExample.createCriteria().andAccountIdEqualTo(Integer.toString(question.getCreator()));
-        questionDto.setUser(userMapper.selectByExample(userExample).get(0));
+        User user =userMapper.selectByExample(userExample).get(0);
+        questionDto.setUser(user);
         return questionDto;
+    }
+
+    public void intViewCount(Integer id){
+        Question question = questionMapper.selectByPrimaryKey(id);
+        questionExtMapper.intView(question);
     }
 }

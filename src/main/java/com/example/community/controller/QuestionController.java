@@ -4,6 +4,8 @@ import com.example.community.demo.Question;
 import com.example.community.demo.QuestionExample;
 import com.example.community.demo.User;
 import com.example.community.dto.QuestionDto;
+import com.example.community.exception.MyException;
+import com.example.community.exception.MyExceptionMessage;
 import com.example.community.mapper.QuestionMapper;
 import com.example.community.service.QuestionDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ public class QuestionController {
     public String question(@PathVariable(name="id") Integer id,
                            Model model){
         QuestionDto questionDto = questionDtoService.findById(id);
+        questionDtoService.intViewCount(id);
         model.addAttribute("questiondto",questionDto);
         return "question";
     }

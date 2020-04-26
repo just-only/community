@@ -7,13 +7,16 @@
 
 [git 学习](https://www.runoob.com/git/git-tutorial.html)
 
-[spring-boot 学习网址](https://docs.spring.io/spring/docs/5.1.0.RELEASE/spring-framework-reference/index.html)
+[spring-boot 学习网址](https://docs.spring.io/spring-boot/docs/2.2.5.RELEASE/reference/html/index.html)
   
 [Github 第三方登录授权](https://developer.github.com/apps/building-oauth-apps/)
 
 [LomBok 官网](https://projectlombok.org/)
 
 [FlyWay官网](https://flywaydb.org/)
+
+[Mybatis Generator](http://mybatis.org/generator/reference/plugins.html)
+[SpringBoot集合Mybatis](http://mybatis.org/spring-boot-starter/)
 #### 笔记 [~/community/notes]
 
 ###### git笔记: User_Git.md

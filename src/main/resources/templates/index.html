@@ -31,10 +31,10 @@
                     <span th:text="${questiondto.question.description}"></span><br/>
 
 
-                    <span class="account-image-size">
-                        作者：<span th:text="${questiondto.user.name}"></span> •
-                        <span th:text="${questiondto.question.commentCount}"></span> 评论 •
-                        <span th:text="${questiondto.question.viewCount}"></span> 预览 •
+                    <span class="account-image-size smallfontstyle">
+                        作者：<span th:text="${questiondto.user.name}"></span> • 评论
+                        <span th:text="${questiondto.question.commentCount}"></span>  • 预览
+                        <span th:text="${questiondto.question.viewCount}"></span> • 时间 •
                         <span th:text="${#dates.format(questiondto.question.createTime,'yyyy-MM-dd HH:mm')}"></span>
                     </span>
                     <hr>

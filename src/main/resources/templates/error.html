@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>风云论坛</title>
+    <!--    导入css样式和js模板代码-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/community.css">
+
+</head>
+<body>
+<nav th:insert="~{head :: nav}"></nav>
+<div class="jumbotron">
+    <h1>系统错误！！！</h1>
+    <p th:text="${message}">待会再试吧</p>
+    <p><a class="btn btn-primary btn-lg" href="/" role="button">跳转页面</a></p>
+</div>
+</body>
+</html>
