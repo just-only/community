@@ -1,11 +1,20 @@
 package com.example.community.controller;
 
+import com.example.community.JsonDto.JsonComment;
 import com.example.community.demo.Comment;
+import com.example.community.demo.Question;
 import com.example.community.demo.User;
 import com.example.community.dto.CommentDto;
+import com.example.community.exception.CommentException;
+import com.example.community.exception.MyException;
+import com.example.community.exception.UserException;
 import com.example.community.mapper.CommentMapper;
+import com.example.community.mapper.QuestionExtMapper;
+import com.example.community.mapper.QuestionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,19 +32,36 @@ public class CommentController {
     @Autowired
     CommentMapper commentMapper;
 
-    @PostMapping("/comment")
-    public String post(@RequestBody CommentDto commentDto){
-        System.out.println(commentDto);
+    @Autowired
+    QuestionExtMapper questionExtMapper;
+
+    @Autowired
+    QuestionMapper questionMapper;
+
+    @Transactional
+    @ResponseBody
+    @PostMapping("/comment/replay")
+    public String getReplayUser(@RequestBody JsonComment jsonComment,HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
+        if(user == null){
+            return CommentException.User_Is_NUll.getMessage();
+        }
         Comment comment = new Comment();
-        comment.setQuestionId(commentDto.getQuestionId());
-        comment.setCommentTxt(commentDto.getCommentText());
-        comment.setType(commentDto.getType());
+        comment.setCommentText(jsonComment.getCommentText());
+        comment.setParentId(jsonComment.getParentId().longValue());
+        comment.setCommentorId(jsonComment.getCommentor().longValue());
+        comment.setQuestionId(jsonComment.getQuestionId().longValue());
         comment.setCreateTime(System.currentTimeMillis());
-        //User user = (User) request.getSession().getAttribute("user");
         comment.setModefied(System.currentTimeMillis());
-        comment.setCommentorId((long) 1);
-        comment.setLikeCount(10L);
+        comment.setType(jsonComment.getType());
+        comment.setLikeCount(0L);
         commentMapper.insert(comment);
-        return "/";
+        Question question = questionMapper.selectByPrimaryKey(jsonComment.getQuestionId());
+        int n = questionExtMapper.addComment(question);
+        if(n!=0){
+            return "success";
+        }else{
+            return "fail";
+        }
     }
 }

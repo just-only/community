@@ -45,3 +45,9 @@ body{
 .jumbotron{
     margin: 60px;
 }
+.comment_style{
+    margin: 20px;
+}
+.comment_input_right{
+    float: right;
+}

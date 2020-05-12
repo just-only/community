@@ -9,10 +9,9 @@ package com.example.community.exception;
  */
 public class MyException extends RuntimeException {
     private String message;
-    public MyException(MyExceptionMessage myExceptionMessage){
-        this.message=myExceptionMessage.getMessage();
+    public MyException(ExceptionMessage exceptionMessage){
+        this.message=exceptionMessage.getMessage();
     }
-
     public String getMessage(){
         return message;
     }

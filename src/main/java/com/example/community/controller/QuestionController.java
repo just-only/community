@@ -4,9 +4,11 @@ import com.example.community.demo.Question;
 import com.example.community.demo.QuestionExample;
 import com.example.community.demo.User;
 import com.example.community.dto.QuestionDto;
+import com.example.community.dto.VisitCommentDto;
 import com.example.community.exception.MyException;
-import com.example.community.exception.MyExceptionMessage;
+import com.example.community.exception.QuestionExceptionMessage;
 import com.example.community.mapper.QuestionMapper;
+import com.example.community.service.CommentService;
 import com.example.community.service.QuestionDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Copyright (C), 2018-2020
@@ -31,11 +35,17 @@ public class QuestionController {
     @Autowired
     QuestionMapper questionMapper;
 
+    @Autowired
+    CommentService commentService;
+
     @GetMapping("/question/{id}")
     public String question(@PathVariable(name="id") Integer id,
                            Model model){
         QuestionDto questionDto = questionDtoService.findById(id);
         questionDtoService.intViewCount(id);
+        List<VisitCommentDto> visitCommentDtos = new ArrayList<VisitCommentDto>();
+        visitCommentDtos = commentService.getComments(id);
+        model.addAttribute("visitCommentDtos",visitCommentDtos);
         model.addAttribute("questiondto",questionDto);
         return "question";
     }
@@ -52,6 +62,9 @@ public class QuestionController {
                                  Model model){
         Question question = new Question();
         question = questionMapper.selectByPrimaryKey(id);
+        if(question==null){
+            throw new MyException(QuestionExceptionMessage.Question_No_Found);
+        }
         String tag = question.getTag();
         String title = question.getTitle();
         String description = question.getDescription();
@@ -73,6 +86,9 @@ public class QuestionController {
 
         Question question = new Question();
         question = questionMapper.selectByPrimaryKey(id);
+        if(question==null){
+            throw new MyException(QuestionExceptionMessage.Question_No_Found);
+        }
         model.addAttribute("tag",tag);
         model.addAttribute("title",title);
         model.addAttribute("description",description);
@@ -83,17 +99,20 @@ public class QuestionController {
         User user = getUser(request);
 
         if(user == null) {
-            model.addAttribute("error1", "用户未登录！");
+            model.addAttribute("error2", "用户未登录！");
             return "redirect:/updatequestion"+"/"+id;
         }else{
             Question question1 = new Question();
-            question.setDescription(description);
-            question.setTag(tag);
-            question.setTitle(title);
-            question.setModifiedTime(System.currentTimeMillis());
+            question1.setDescription(description);
+            question1.setTag(tag);
+            question1.setTitle(title);
+            question1.setModifiedTime(System.currentTimeMillis());
             QuestionExample questionExample = new QuestionExample();
             questionExample.createCriteria().andIdEqualTo(id);
-            questionMapper.updateByExampleSelective(question,questionExample);
+            int status = questionMapper.updateByExampleSelective(question1,questionExample);
+            if(status!=1){
+                throw new MyException(QuestionExceptionMessage.Question_No_Found);
+            }
             return "redirect:/question"+"/"+id;
         }
     }

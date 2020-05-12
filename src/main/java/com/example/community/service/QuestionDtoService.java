@@ -6,7 +6,7 @@ import com.example.community.demo.User;
 import com.example.community.demo.UserExample;
 import com.example.community.dto.QuestionDto;
 import com.example.community.exception.MyException;
-import com.example.community.exception.MyExceptionMessage;
+import com.example.community.exception.QuestionExceptionMessage;
 import com.example.community.mapper.QuestionExtMapper;
 import com.example.community.mapper.QuestionMapper;
 import com.example.community.mapper.UserMapper;
@@ -85,6 +85,9 @@ public class  QuestionDtoService {
     public QuestionDto findById(Integer id) {
         QuestionDto questionDto = new QuestionDto();
         Question question = questionMapper.selectByPrimaryKey(id);
+        if(question==null){
+            throw new MyException(QuestionExceptionMessage.Question_No_Found);
+        }
         questionDto.setQuestion(question);
         UserExample userExample = new UserExample();
         userExample.createCriteria().andAccountIdEqualTo(Integer.toString(question.getCreator()));

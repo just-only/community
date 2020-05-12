@@ -5,6 +5,7 @@
     <title th:text="${questiondto.question.title}"></title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/comment.js" type="application/javascript"></script>
     <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
     <link rel="stylesheet" href="/css/community.css">
@@ -23,7 +24,9 @@
                         发布时间：
                         <span th:text="${#dates.format(questiondto.question.createTime,'yyyy-MM-dd')}"></span>   |
                         预览次数：
-                        <span th:text="${questiondto.question.viewCount}"></span>
+                        <span th:text="${questiondto.question.viewCount}"></span> |
+                        评论次数：
+                        <span th:text="${questiondto.question.commentCount}"></span>
             </span>
             <hr>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${questiondto.question.description}"></div>
@@ -39,6 +42,56 @@
                     编辑
                 </a>
             </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment_style" th:each="visitCommentDto : ${visitCommentDtos}">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object img-rounde account-image-size" th:src="${visitCommentDto.getCommentDto().getUser().imageUrl}" >
+                    </a>
+                </div>
+                <div class="media-body" id="replayone">
+                    <input type="hidden" id="replay_User_Name" th:value="${visitCommentDto.commentDto.getUser().name}">
+                    <input type="hidden" id="replay_User_id" th:value="${visitCommentDto.commentDto.getComment().id}">
+                    <a onclick="replay(id,name)" th:id="${visitCommentDto.commentDto.getComment().id}"
+                       th:name="${visitCommentDto.commentDto.getUser().name}" class="comment_input_right smallfontstyle">回复</a>
+                    <span class="account-image-size smallfontstyle">
+                        <span id='visitCommentDto' name='visitCommentDto' th:text="${visitCommentDto.commentDto.getUser().name}"></span> @
+                        <span th:text="${visitCommentDto.commentDto.getReplyUser().name}"></span> ||
+                         时间:
+                        <span th:text="${#dates.format(visitCommentDto.commentDto.comment.createTime,'yyyy-MM-dd HH:mm')}"></span>
+                    </span><br>
+                    <span th:text="${visitCommentDto.commentDto.comment.getCommentText()}"></span><br/>
+                    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 comment_style" th:each="commentDto :${visitCommentDto.commentDtos}">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object img-rounde account-image-size" th:src="${commentDto.user.imageUrl}" >
+                            </a>
+                        </div>
+                        <div class="media-body" id="replaytwo">
+                            <input type="hidden" id="replay_User_Name1" th:value="${visitCommentDto.commentDto.getUser().name}">
+                            <input type="hidden" id="replay_User_id1" th:value="${commentDto.getComment().id}">
+                            <a onclick="replay1(id,title,name)" th:id="${commentDto.getComment().id}" th:title="${visitCommentDto.commentDto.getComment().id}"
+                                th:name="${commentDto.getUser().name}" class="comment_input_right smallfontstyle">回复</a>
+                           <span class="account-image-size smallfontstyle">
+                           <span th:text="${commentDto.getUser().name}"></span> @
+                           <span th:text="${commentDto.getReplyUser().name}"></span>  ||
+                           时间:
+                           <span th:text="${#dates.format(commentDto.comment.createTime,'yyyy-MM-dd HH:mm')}"></span>
+                           </span></br>
+                            <span th:text="${commentDto.comment.getCommentText()}"></span><br/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <input type="hidden" id="question_id" th:value="${questiondto.question.id}"/>
+                <input type="hidden" id="commentor" th:value="${session.user.getAccountId()}" th:if="${session.user!=null}">
+                <input type="hidden" id="parent_id" th:value="0">
+                <input type="hidden" id="type_id" th:value="0">
+                <div class="form-group">
+                  <label for="comment_text">评论内容:</label>
+                    <label id="replay_name" text=""></label>
+                  <textarea id="comment_text" class="form-control" cols="30" rows="10"></textarea>
+                </div>
+                <button onclick="replayALl()" ata-dismiss="alert" class="btn btn-success up_button">评论</button>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

@@ -1,5 +1,7 @@
 package com.example.community.dto;
 
+import com.example.community.demo.Comment;
+import com.example.community.demo.User;
 import lombok.Data;
 
 import java.math.BigInteger;
@@ -13,7 +15,7 @@ import java.math.BigInteger;
  */
 @Data
 public class CommentDto {
-    private Long questionId;
-    private String commentText;
-    private int type;
+      private Comment comment;
+      private User user;
+      private User replyUser;
 }
