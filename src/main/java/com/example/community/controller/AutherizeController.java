@@ -1,5 +1,6 @@
 package com.example.community.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.community.demo.User;
 import com.example.community.demo.UserExample;
 import com.example.community.dto.AccessTokenDto;
@@ -9,13 +10,19 @@ import com.example.community.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -26,6 +33,7 @@ import java.util.UUID;
  * Modified By:
  */
 @Controller
+@CrossOrigin(origins = "https://github.com")
 public class AutherizeController {
 
     //自动注入实体类，不用使用new来创建对象
@@ -58,7 +66,7 @@ public class AutherizeController {
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
                            HttpServletRequest request,
-                           HttpServletResponse response){
+                           HttpServletResponse response) throws IOException {
 
         AccessTokenDto accessTokenDto = new AccessTokenDto();
         accessTokenDto.setCode(code);

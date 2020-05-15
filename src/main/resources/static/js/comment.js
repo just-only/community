@@ -46,3 +46,42 @@ function replayALl() {
         dataType: "json"
     });
 }
+
+function questionComment(){
+    $("div [id=secondComment]").each(function(){
+        $(this).toggle();
+    });
+}
+
+function questionGiveUp(name,title){
+    var id = name;
+    var user_id = title;
+    if(user_id == '0'){
+        alert("用户未登录，不能点赞哦！");
+        return ;
+    }
+    $.ajax({
+        type: "POST",
+        url: "/question/giveup",
+        data: {"id":id},
+        success : function(){
+           alert("问题点赞成功");
+        }
+    });
+}
+function comment1GiveUp(uid,name) {
+    var id = name;
+    var user_id = uid;
+    if(user_id=='0'){
+        alert("用户未登录，不能点赞哦！");
+        return ;
+    }
+    $.ajax({
+        type: "POST",
+        url: "/comment/giveup",
+        data: {"id":id},
+        success : function(){
+            alert("评论点赞成功");
+        }
+    });
+}

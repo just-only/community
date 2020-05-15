@@ -5,6 +5,7 @@ import com.example.community.dto.AccessTokenDto;
 import com.example.community.dto.GithubUser;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.IOException;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
  * Modified By:
  */
 @Component
+@CrossOrigin(origins = "https://github.com")
 public class GithubProvider {
 
     /*

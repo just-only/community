@@ -7,6 +7,7 @@ import com.example.community.dto.QuestionDto;
 import com.example.community.dto.VisitCommentDto;
 import com.example.community.exception.MyException;
 import com.example.community.exception.QuestionExceptionMessage;
+import com.example.community.mapper.QuestionExtMapper;
 import com.example.community.mapper.QuestionMapper;
 import com.example.community.service.CommentService;
 import com.example.community.service.QuestionDtoService;
@@ -37,6 +38,9 @@ public class QuestionController {
 
     @Autowired
     CommentService commentService;
+
+    @Autowired
+    QuestionExtMapper questionExtMapper;
 
     @GetMapping("/question/{id}")
     public String question(@PathVariable(name="id") Integer id,
@@ -115,5 +119,16 @@ public class QuestionController {
             }
             return "redirect:/question"+"/"+id;
         }
+    }
+
+    @ResponseBody
+    @PostMapping("/question/giveup")
+    public String addGiveUp(@RequestParam(name="id") String id){
+        Question question = questionMapper.selectByPrimaryKey(Integer.valueOf(id));
+        if(question==null){
+            throw  new MyException(QuestionExceptionMessage.Question_No_Found);
+        }
+        questionExtMapper.addLike(question);
+        return "sucess";
     }
 }

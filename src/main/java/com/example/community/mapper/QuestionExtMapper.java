@@ -10,4 +10,5 @@ import java.util.List;
 public interface QuestionExtMapper {
     int intView(Question record);
     int addComment(Question record);
+    int addLike(Question record);
 }

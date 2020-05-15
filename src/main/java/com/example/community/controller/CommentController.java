@@ -8,6 +8,7 @@ import com.example.community.dto.CommentDto;
 import com.example.community.exception.CommentException;
 import com.example.community.exception.MyException;
 import com.example.community.exception.UserException;
+import com.example.community.mapper.CommentExtMapper;
 import com.example.community.mapper.CommentMapper;
 import com.example.community.mapper.QuestionExtMapper;
 import com.example.community.mapper.QuestionMapper;
@@ -38,6 +39,9 @@ public class CommentController {
     @Autowired
     QuestionMapper questionMapper;
 
+    @Autowired
+    CommentExtMapper commentExtMapper;
+
     @Transactional
     @ResponseBody
     @PostMapping("/comment/replay")
@@ -45,6 +49,9 @@ public class CommentController {
         User user = (User) request.getSession().getAttribute("user");
         if(user == null){
             return CommentException.User_Is_NUll.getMessage();
+        }
+        if(jsonComment.getCommentText().isEmpty()){
+            return CommentException.Comment_Is_Null.getMessage();
         }
         Comment comment = new Comment();
         comment.setCommentText(jsonComment.getCommentText());
@@ -63,5 +70,13 @@ public class CommentController {
         }else{
             return "fail";
         }
+    }
+
+    @ResponseBody
+    @PostMapping("/comment/giveup")
+    public String commentGiveUp(@RequestParam(name="id") String id){
+         Comment comment = commentMapper.selectByPrimaryKey(Long.valueOf(id));
+         commentExtMapper.addCommentLike(comment);
+         return "sucess";
     }
 }
