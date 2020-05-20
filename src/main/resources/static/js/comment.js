@@ -1,8 +1,12 @@
 function replay(id,name) {
         var commentor= name;
         var parent_id = id;
+       $("div[id="+id+"]").each(function(){
+            $(this).toggle();
+        });
         $("#replay_name").html("@"+commentor);
         $("#parent_id").val(parent_id);
+        $("#type_id").val(parent_id);
         console.log(parent_id);
 }
 function replay1(id,title,name) {
@@ -47,11 +51,6 @@ function replayALl() {
     });
 }
 
-function questionComment(){
-    $("div [id=secondComment]").each(function(){
-        $(this).toggle();
-    });
-}
 
 function questionGiveUp(name,title){
     var id = name;

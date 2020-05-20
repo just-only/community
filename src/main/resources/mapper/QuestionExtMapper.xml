@@ -50,4 +50,15 @@
     like_count = like_count + 1
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="findQuestionByTag" parameterType="com.example.community.demo.Question" resultMap="BaseResultMap">
+    select * from question
+    where tag like CONCAT('%',#{tag},'%')
+  </select>
+  <select id="findViewMaxQuestion" parameterType="com.example.community.demo.Question" resultMap="BaseResultMap">
+    select * from question order by view_count desc limit 20
+  </select>
+  <select id="findByTitle" parameterType="com.example.community.demo.Question" resultMap="BaseResultMap">
+     select * from question
+    where title like CONCAT('%',#{title},'%')
+  </select>
 </mapper>

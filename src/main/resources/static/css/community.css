@@ -54,3 +54,14 @@ body{
 .give_up{
     margin: auto auto auto 100px;
 }
+.tag_length{
+    margin-left: 6px;
+}
+.like-tag-question{
+    font-family: STSong;
+    font-size: 15px;
+}
+.view-max-question{
+    font-family: STSong;
+    font-size: 18px;
+}

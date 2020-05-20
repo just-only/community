@@ -29,17 +29,12 @@
                         <span th:text="${questiondto.question.commentCount}"></span> |
                         点赞次数：
                         <span th:text="${questiondto.question.likeCount}"></span> |
-                        赞
             </span>
             <a th:if="${session.user == null}" onclick="questionGiveUp(name,'0')" id="comment" th:name="${questiondto.question.id}">
                 <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
             </a>
             <a th:if="${session.user != null}" onclick="questionGiveUp(name,title)" id="comment1"  th:title="${session.user.getAccountId()}" th:name="${questiondto.question.id}">
                 <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-            </a>
-            <span class="smallfontstyle"> |回复</span>
-            <a onclick="questionComment()" id="comment-give-up">
-                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
             </a>
             <hr>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${questiondto.question.description}"></div>
@@ -52,14 +47,20 @@
                     </a>
                 <a class="modify-detailde-pen" th:href="@{'/updatequestion/'+ ${questiondto.question.id} }" th:if="${session.user!=null && questiondto.user.getAccountId()==session.user.getAccountId()}">
                     | <span class="glyphicon glyphicon-pencil modify-detailde-pen" aria-hidden="true"></span>
-                    编辑
+                    编辑  |
                 </a>
+                <h4><span class="label label-info tag_length" th:each="tag:${questiondto.question.tag.split(',')}">
+                    <span class=" glyphicon glyphicon-tags"></span>
+                    <span class="label label-info" th:text="${tag}"></span>
+                    </span>
+                </h4>
             </div>
             <hr>
             <hr>
-            <div>
-                <span class="h4">
-                  <span class="h4" th:text="${questiondto.question.commentCount}"></span>个评论
+            <div id="AllComment">
+                <hr><hr>
+                <span class="h5">
+                  <span class="h5" th:text="${questiondto.question.commentCount}"></span>个评论
                 </span>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment_style" th:each="visitCommentDto : ${visitCommentDtos}">
                     <div class="media-left">
@@ -93,7 +94,7 @@
                         </span>
                         <br>
                         <span th:text="${visitCommentDto.commentDto.comment.getCommentText()}"></span><br/>
-                        <div id="secondComment" class="col-lg-11 col-md-11 col-sm-11 col-xs-11 comment_style" style="display: none;" th:each="commentDto :${visitCommentDto.commentDtos}">
+                        <div th:id="${visitCommentDto.commentDto.getComment().id}" class="col-lg-11 col-md-11 col-sm-11 col-xs-11 comment_style" style="display: none;" th:each="commentDto :${visitCommentDto.commentDtos}">
                             <div class="media-left">
                                 <a href="#">
                                     <img class="media-object img-rounde account-image-size" th:src="${commentDto.user.imageUrl}" >
@@ -162,6 +163,9 @@
                 </div>
                 <hr>
                 <h4>热门问题</h4>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:each="likequestion:${questionsLike}">
+                <li th:if="${questiondto.question.id!=likequestion.id}"><a class="like-tag-question" th:if="${questiondto.question.id!=likequestion.id}" th:href="@{'/question/'+ ${likequestion.getId()}}" th:text="${likequestion.getTitle()}"></a></li>
             </div>
         </div>
     </div>

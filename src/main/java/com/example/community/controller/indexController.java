@@ -1,9 +1,11 @@
 package com.example.community.controller;
 
+import com.example.community.demo.Question;
 import com.example.community.demo.QuestionExample;
 import com.example.community.demo.User;
 import com.example.community.dto.PageDto;
 import com.example.community.dto.QuestionDto;
+import com.example.community.mapper.QuestionExtMapper;
 import com.example.community.mapper.QuestionMapper;
 import com.example.community.service.QuestionDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class indexController {
 
     @Autowired
     private QuestionMapper questionMapper;
+
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
     /*
      * @Description:
      * @Author: weidongya
@@ -52,6 +57,8 @@ public class indexController {
         PageDto pagedto = new PageDto();
         pagedto.setPages(questionDtos);
         pagedto.setPage(page,count,size);
+        List<Question> viewMaxquestions = questionExtMapper.findViewMaxQuestion();
+        model.addAttribute("viewMaxQuestions",viewMaxquestions);
         model.addAttribute("pagedto",pagedto);
         return "index";
     }

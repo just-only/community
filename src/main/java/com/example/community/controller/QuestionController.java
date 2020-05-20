@@ -11,6 +11,7 @@ import com.example.community.mapper.QuestionExtMapper;
 import com.example.community.mapper.QuestionMapper;
 import com.example.community.service.CommentService;
 import com.example.community.service.QuestionDtoService;
+import com.example.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +43,9 @@ public class QuestionController {
     @Autowired
     QuestionExtMapper questionExtMapper;
 
+    @Autowired
+    QuestionService questionService;
+
     @GetMapping("/question/{id}")
     public String question(@PathVariable(name="id") Integer id,
                            Model model){
@@ -49,6 +53,8 @@ public class QuestionController {
         questionDtoService.intViewCount(id);
         List<VisitCommentDto> visitCommentDtos = new ArrayList<VisitCommentDto>();
         visitCommentDtos = commentService.getComments(id);
+        List<Question> questionsLikes = questionService.findByTag(questionDto.getQuestion().getTag());
+        model.addAttribute("questionsLike",questionsLikes);
         model.addAttribute("visitCommentDtos",visitCommentDtos);
         model.addAttribute("questiondto",questionDto);
         return "question";
