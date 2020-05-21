@@ -84,3 +84,17 @@ function comment1GiveUp(uid,name) {
         }
     });
 }
+function selectTag(str) {
+    var value =$("#tag").val();
+    if(value.indexOf(str) == -1){
+        if(value){
+            $("#tag").val(value+','+str);
+        }else{
+            $("#tag").val(str);
+        }
+    }
+}
+
+function  showTag() {
+    $("#allTag").show();
+}

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,5 +62,24 @@ public class indexController {
         model.addAttribute("viewMaxQuestions",viewMaxquestions);
         model.addAttribute("pagedto",pagedto);
         return "index";
+    }
+
+    @GetMapping("/searchquestioin")
+    public String searchQuestion(HttpServletRequest request,
+                        Model model,
+                        @RequestParam(name = "page",defaultValue = "1") Integer page,
+                        @RequestParam(name = "size",defaultValue = "5") Integer size,
+                        @RequestParam(name="title") String title){
+        User user =(User) request.getSession().getAttribute("user");
+        List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
+        questionDtos = questionDtoService.listByTitle(title,page,size);
+        Integer count = (int) questionMapper.countByExample(new QuestionExample());
+        PageDto pagedto = new PageDto();
+        pagedto.setPages(questionDtos);
+        pagedto.setPage(page,count,size);
+        List<Question> viewMaxquestions = questionExtMapper.findViewMaxQuestion();
+        model.addAttribute("viewMaxQuestions",viewMaxquestions);
+        model.addAttribute("pagedto",pagedto);
+        return "searchquestion";
     }
 }

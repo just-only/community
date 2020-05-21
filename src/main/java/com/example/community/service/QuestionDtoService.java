@@ -96,6 +96,24 @@ public class  QuestionDtoService {
         return questionDto;
     }
 
+    public List<QuestionDto> listByTitle(String title,Integer page,Integer size){
+        Integer offset = size*(page-1);
+        List<Question> questions = questionExtMapper.findByTitle(title,offset,size);
+        List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
+        //   System.out.println(questions);
+        for (Question question:questions) {
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andAccountIdEqualTo(Integer.toString(question.getCreator()));
+            User user = userMapper.selectByExample(userExample).get(0);
+            //System.out.println(user);
+            QuestionDto questionDto = new QuestionDto();
+            questionDto.setUser(user);
+            questionDto.setQuestion(question);
+            questionDtos.add(questionDto);
+        }
+        return questionDtos;
+    }
+
     public void intViewCount(Integer id){
         Question question = questionMapper.selectByPrimaryKey(id);
         questionExtMapper.intView(question);

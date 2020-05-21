@@ -32,8 +32,4 @@ public class QuestionService {
         return questions;
     }
 
-    public List<Question> findByTitle(String title){
-        List<Question> questions = questionExtMapper.findByTitle(title);
-        return questions;
-    }
 }

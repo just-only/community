@@ -13,5 +13,5 @@ public interface QuestionExtMapper {
     int addLike(Question record);
     List<Question> findQuestionByTag(String tag);
     List<Question> findViewMaxQuestion();
-    List<Question> findByTitle(String title);
+    List<Question> findByTitle(String title,int page,int size);
 }
