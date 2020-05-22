@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Data
 public class PageDto {
-    private List<QuestionDto> pages;
+    private List<?> pages;
     private boolean nextPage;
     private boolean perviousPage;
     private  boolean firstPage;

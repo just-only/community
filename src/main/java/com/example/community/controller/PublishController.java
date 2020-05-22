@@ -3,6 +3,8 @@ package com.example.community.controller;
 import com.example.community.demo.Question;
 import com.example.community.demo.User;
 import com.example.community.mapper.QuestionMapper;
+import com.example.community.service.NoticeService;
+import okhttp3.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,8 @@ public class PublishController {
     @Autowired
     private QuestionMapper questionMapper;
 
+    @Autowired
+    private NoticeService noticeService;
 
     public User getUser(HttpServletRequest request){
         User user = null;
@@ -33,7 +37,12 @@ public class PublishController {
     }
 
     @GetMapping("/publish")
-    public String doPublish(){
+    public String doPublish(Model model, HttpServletRequest request){
+        User user = getUser(request);
+        if(user != null){
+            Integer noticeCount = noticeService.getNoticeCount(Integer.valueOf(user.getAccountId()));
+            model.addAttribute("noticeCount",noticeCount);
+        }
         return "publish";
     }
 

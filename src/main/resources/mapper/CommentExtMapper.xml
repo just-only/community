@@ -28,4 +28,7 @@
         like_count = like_count + 1
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <select id="findMaxCommentId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select max(id) from comment
+    </select>
 </mapper>

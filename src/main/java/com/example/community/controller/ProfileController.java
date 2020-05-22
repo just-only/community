@@ -1,10 +1,15 @@
 package com.example.community.controller;
 
+import com.example.community.demo.NoticeExample;
 import com.example.community.demo.QuestionExample;
 import com.example.community.demo.User;
+import com.example.community.dto.NoticeDto;
 import com.example.community.dto.PageDto;
 import com.example.community.dto.QuestionDto;
+import com.example.community.exception.MyException;
+import com.example.community.exception.QuestionException;
 import com.example.community.mapper.QuestionMapper;
+import com.example.community.service.NoticeService;
 import com.example.community.service.QuestionDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,10 +34,14 @@ public class ProfileController {
 
 
     @Autowired
-    QuestionMapper questionMapper;
+    private QuestionMapper questionMapper;
 
     @Autowired
-    QuestionDtoService questionDtoService;
+    private QuestionDtoService questionDtoService;
+
+    @Autowired
+    private NoticeService noticeService;
+
 
     @GetMapping("/profile/{action}")
     public String myquestion(@PathVariable(name = "action") String action,
@@ -42,9 +51,9 @@ public class ProfileController {
                              @RequestParam(name = "size",defaultValue = "5") Integer size){
         User user = (User) request.getSession().getAttribute("user");
         if(user==null){
-            return "index";
+            throw  new MyException(QuestionException.User_is_NUll);
         }
-
+        Integer noticeCount = noticeService.getNoticeCount(Integer.valueOf(user.getAccountId()));
         if("question".equals(action)){
             model.addAttribute("saction","question");
             model.addAttribute("sactionName","我的问题");
@@ -60,7 +69,16 @@ public class ProfileController {
             pagedto.setPage(page,count,size);
             model.addAttribute("pagedto",pagedto);
             model.addAttribute("count",count);
+            model.addAttribute("noticeCount",noticeCount);
         }else if("repies".equals(action)){
+            List<NoticeDto> noticeDtos = noticeService.findAllByUserId(Integer.valueOf(user.getAccountId()));
+            int allNoticeCount = noticeService.getAllNoticeCount(Integer.valueOf(user.getAccountId()));
+            PageDto pagedto = new PageDto();
+            pagedto.setPages(noticeDtos);
+            pagedto.setPage(page,allNoticeCount,size);
+            model.addAttribute("pagedto",pagedto);
+            model.addAttribute("noticeCount",noticeCount);
+            model.addAttribute("allNoticeCount",allNoticeCount);
             model.addAttribute("saction","repies");
             model.addAttribute("sactionName","我的回复");
         }

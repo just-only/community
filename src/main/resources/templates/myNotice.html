@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>风云论坛</title>
+    <!--    导入css样式和js模板代码-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/comment.js" type="application/javascript"></script>
+    <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/js/comment.js" type="application/javascript"></script>
+</head>
+<body>
+<nav id="head_all_div" th:fragment="notice" class="navbar navbar-default">
+
+    <div class="profile-padding">
+            <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true" th:text="${sactionName}"></span></h2>
+            <div class="media" th:each="noticeDto : ${pagedto.getPages()}">
+                <div class="media-body">
+                    <a class="media-heading" th:text="${noticeDto.user.name}"></a>
+                    <span>回复</span>
+                    <a th:href="@{'/question/'+ ${noticeDto.getQuestion().getId()}} + '/?noticeId=' + ${noticeDto.getNotice().id}">
+                        <span th:if="${noticeDto.getQuestion()!=null}" th:text="${noticeDto.getQuestion().getTitle()}"></span>
+                    </a><br/>
+                    <span class="account-image-size smallfontstyle" th:if="${noticeDto.getNotice().type==0}"> 未查看 </span>
+                    <span class="account-image-size smallfontstyle">  时间：
+                                    <span th:text="${#dates.format(noticeDto.getComment().createTime,'yyyy-MM-dd HH:mm')}"></span>
+                            </span>
+                    <hr>
+                </div>
+            </div>
+            <nav aria-label="Page navigation" class="pageNumber">
+                <ul class="pagination">
+                    <li th:if="${pagedto.firstPage}">
+                        <a href="/profile/question/?page=1" aria-label="Previous">
+                            <span aria-hidden="true">&lt;&lt;</span>
+                        </a>
+                    </li>
+                    <li th:if="${pagedto.perviousPage}">
+                        <a th:href="@{/profile/question/(page=${pagedto.getIndex()-1})}" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                        </a>
+                    </li>
+                    <li th:each="page:${pagedto.list}" th:class="${pagedto.index == page}? 'active':'' ">
+                        <a th:href="@{/profile/question/(page=${page})}" th:text="${page}"></a>
+                    </li>
+
+                    <li th:if="${pagedto.nextPage}">
+                        <a th:href="@{/profile/question/(page=${pagedto.index+1})}" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                        </a>
+                    </li>
+
+                    <li th:if="${pagedto.lastPage}">
+                        <a th:href="@{/profile/question/(page=${pagedto.count})}" aria-label="Next">
+                            <span aria-hidden="true">&gt;&gt;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+    </div>
+</nav>
+</body>
+</html>

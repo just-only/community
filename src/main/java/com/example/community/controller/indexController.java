@@ -7,6 +7,7 @@ import com.example.community.dto.PageDto;
 import com.example.community.dto.QuestionDto;
 import com.example.community.mapper.QuestionExtMapper;
 import com.example.community.mapper.QuestionMapper;
+import com.example.community.service.NoticeService;
 import com.example.community.service.QuestionDtoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,9 @@ public class indexController {
 
     @Autowired
     private QuestionExtMapper questionExtMapper;
+
+    @Autowired
+    private NoticeService noticeService;
     /*
      * @Description:
      * @Author: weidongya
@@ -52,6 +56,10 @@ public class indexController {
                         @RequestParam(name = "page",defaultValue = "1") Integer page,
                         @RequestParam(name = "size",defaultValue = "5") Integer size){
         User user =(User) request.getSession().getAttribute("user");
+        if(user!=null) {
+            Integer noticeCount = noticeService.getNoticeCount(Integer.valueOf(user.getAccountId()));
+            model.addAttribute("noticeCount",noticeCount);
+        }
         List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
         questionDtos = questionDtoService.list(page,size);
         Integer count = (int) questionMapper.countByExample(new QuestionExample());
@@ -71,6 +79,10 @@ public class indexController {
                         @RequestParam(name = "size",defaultValue = "5") Integer size,
                         @RequestParam(name="title") String title){
         User user =(User) request.getSession().getAttribute("user");
+        if(user!=null) {
+            Integer noticeCount = noticeService.getNoticeCount(Integer.valueOf(user.getAccountId()));
+            model.addAttribute("noticeCount",noticeCount);
+        }
         List<QuestionDto> questionDtos = new ArrayList<QuestionDto>();
         questionDtos = questionDtoService.listByTitle(title,page,size);
         Integer count = (int) questionMapper.countByExample(new QuestionExample());

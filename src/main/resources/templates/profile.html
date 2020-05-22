@@ -13,58 +13,11 @@
 <nav th:insert="~{head :: nav}"></nav>
 <div class="container-fluid main">
     <div class="row">
-        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-            <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true" th:text="${sactionName}"></span></h2>
-            <div class="media" th:each="questiondto : ${pagedto.pages}">
-                <div class="media-left">
-                    <a href="#">
-                        <img class="media-object img-rounde account-image-size" th:src="${questiondto.user.imageUrl}" >
-                    </a>
-                </div>
-                <div class="media-body">
-                    <h4 class="media-heading">
-                        <a th:href="@{'/question/'+ ${questiondto.question.id} }" th:text="${questiondto.question.title}"></a>
-                    </h4>
-                    <span th:text="${questiondto.question.getDescription()}"></span><br/>
-                    <span class="account-image-size smallfontstyle">
-                        作者：<span th:text="${questiondto.user.name}"></span> • 评论
-                        <span th:text="${questiondto.question.getCommentCount()}"></span> • 预览 •
-                        <span th:text="${questiondto.question.getViewCount()}"></span> 时间
-                        <span th:text="${#dates.format(questiondto.question.getCreateTime(),'yyyy-MM-dd HH:mm')}"></span>
-                    </span>
-                    <hr>
-                </div>
-            </div>
-            <nav aria-label="Page navigation" class="pageNumber">
-                <ul class="pagination">
-                    <li th:if="${pagedto.firstPage}">
-                        <a href="/profile/question/?page=1" aria-label="Previous">
-                            <span aria-hidden="true">&lt;&lt;</span>
-                        </a>
-                    </li>
-                    <li th:if="${pagedto.perviousPage}">
-                        <a th:href="@{/profile/question/(page=${pagedto.getIndex()-1})}" aria-label="Previous">
-                            <span aria-hidden="true">&lt;</span>
-                        </a>
-                    </li>
-                    <li th:each="page:${pagedto.list}" th:class="${pagedto.index == page}? 'active':'' ">
-                        <a th:href="@{/profile/question/(page=${page})}" th:text="${page}"></a>
-                    </li>
-
-                    <li th:if="${pagedto.nextPage}">
-                        <a th:href="@{/profile/question/(page=${pagedto.index+1})}" aria-label="Next">
-                            <span aria-hidden="true">&gt;</span>
-                        </a>
-                    </li>
-
-                    <li th:if="${pagedto.lastPage}">
-                        <a th:href="@{/profile/question/(page=${pagedto.count})}" aria-label="Next">
-                            <span aria-hidden="true">&gt;&gt;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12 profile-padding">
+             <nav th:if="${saction == 'question' }" th:insert="~{myQuestion :: question}"></nav>
+             <nav th:if="${saction == 'repies' }" th:insert="~{myNotice :: notice}"></nav>
         </div>
+
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <br>
             <div class="list-group">
@@ -73,11 +26,11 @@
                     我的问题
                 </a><br>
                 <a href="/profile/repies" th:class="${saction == 'repies' }?'active list-group-item' : 'list-group-item' ">
-                    <span class="badge">5</span>
+                    <span class="badge" th:text="${noticeCount}"></span>
                     我的回复
                 </a><br>
-                <a href="#" class="list-group-item">Porta ac consectetur ac</a><br>
-                <a href="#" class="list-group-item">Vestibulum at eros</a>
+<!--                <a href="#" class="list-group-item">Porta ac consectetur ac</a><br>-->
+<!--                <a href="#" class="list-group-item">Vestibulum at eros</a>-->
             </div>
         </div>
     </div>

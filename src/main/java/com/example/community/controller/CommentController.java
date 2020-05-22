@@ -1,17 +1,12 @@
 package com.example.community.controller;
 
 import com.example.community.JsonDto.JsonComment;
-import com.example.community.demo.Comment;
-import com.example.community.demo.Question;
-import com.example.community.demo.User;
+import com.example.community.demo.*;
 import com.example.community.dto.CommentDto;
 import com.example.community.exception.CommentException;
 import com.example.community.exception.MyException;
 import com.example.community.exception.UserException;
-import com.example.community.mapper.CommentExtMapper;
-import com.example.community.mapper.CommentMapper;
-import com.example.community.mapper.QuestionExtMapper;
-import com.example.community.mapper.QuestionMapper;
+import com.example.community.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +37,9 @@ public class CommentController {
     @Autowired
     CommentExtMapper commentExtMapper;
 
+    @Autowired
+    NoticeMapper noticeMapper;
+
     @Transactional
     @ResponseBody
     @PostMapping("/comment/replay")
@@ -64,6 +62,18 @@ public class CommentController {
         comment.setLikeCount(0L);
         commentMapper.insert(comment);
         Question question = questionMapper.selectByPrimaryKey(jsonComment.getQuestionId());
+        Notice notice = new Notice();
+        Long maxCommentId =Long.valueOf( commentExtMapper.findMaxCommentId());
+        notice.setCommentId(maxCommentId);
+        notice.setSender(Long.valueOf(user.getAccountId()));
+        notice.setType(0);
+        int parentId = jsonComment.getParentId();
+        if(parentId!=0){
+            notice.setReceiver(commentMapper.selectByPrimaryKey(Long.valueOf(parentId)).getCommentorId());
+        }else{
+            notice.setReceiver(questionMapper.selectByPrimaryKey(question.getId()).getCreator().longValue());
+        }
+        noticeMapper.insert(notice);
         int n = questionExtMapper.addComment(question);
         if(n!=0){
             return "success";
